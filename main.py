@@ -62,7 +62,7 @@ ORDER_ID_COUNTER = 0
 
 def place_order(team_id, symbol, side, price, size = 1):
     """
-    Place an order in the LOB. side \in {"BUY","SELL"}.
+    Place an order in the LOB. side in {"BUY","SELL"}.
     """
 
     global ORDER_ID_COUNTER
