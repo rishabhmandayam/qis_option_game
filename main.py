@@ -203,6 +203,7 @@ def run_simulation():
             payoff += qty * option_payoff(strike, opt_type, final_sum)
 
         final_pnls[t_id] = team_cash[t_id] + payoff
+        team_pnl_history[t_id].append(final_pnls[t_id]) 
 
     print("\n--- FINAL RESULTS ---")
     print(f"Final sum of all cards = {final_sum}")
