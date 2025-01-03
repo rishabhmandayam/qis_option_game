@@ -47,11 +47,7 @@ def option_payoff(strike, opt_type, final_underlying):
         return max(0, strike - final_underlying)
 
 def mark_to_market(team_id, current_underlying):
-    """
-    Mark-to-market PnL for a team at a given underlying level.
-    We'll do a naive approach: fair value of the option is the *intrinsic value*,
-    ignoring time value. Modify as needed (e.g., use a model).
-    """
+
     mtm = team_cash[team_id]
     return mtm
 
@@ -98,12 +94,7 @@ def place_order(team_id, symbol, side, price, size = 1):
         open_orders[(team_id, order_id)] = (symbol, side, price, size)
 
 def match_orders():
-    """
-    After all teams have placed orders this tick, cross the LOB. 
-    If the best bid >= best ask, we have a trade at the mid (or choose ask or bid).
-    Here, for simplicity, let's trade at the midpoint or at the ask price.
-    We'll do a naive “match-one-lot-at-a-time” approach.
-    """
+  
     for symbol in ALL_OPTION_SYMBOLS:
         book = order_books[symbol]
         bids = book["bids"]
@@ -147,10 +138,7 @@ def match_orders():
 #TEAM STRATEGY FUNCTIONS
 #############################
 def random_strategy(last_tick_orders, team_id, current_tick):
-    """
-    Places random bids and asks for demonstration. 
-    Real strategies will be provided by the teams.
-    """
+
     orders = []
     n_orders = random.randint(0, 2)
     for _ in range(n_orders):
