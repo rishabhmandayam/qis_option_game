@@ -1,4 +1,5 @@
 import random
+import numpy as np
 import matplotlib.pyplot as plt
 from collections import defaultdict, deque
 
@@ -137,7 +138,7 @@ def match_orders():
 #############################
 #TEAM STRATEGY FUNCTIONS
 #############################
-def random_strategy(last_tick_orders, team_id, current_tick):
+def random_strategy(order_history, team_id, current_tick):
 
     orders = []
     n_orders = random.randint(0, 2)
@@ -148,6 +149,7 @@ def random_strategy(last_tick_orders, team_id, current_tick):
         size = random.randint(1, 3)
         orders.append((symbol, side, price, size))
     return orders
+
 
 team_strategies = {
     0: random_strategy,
@@ -163,13 +165,14 @@ def run_simulation():
     for t_id in range(N_TEAMS):
         team_pnl_history[t_id].append(mark_to_market(t_id, current_underlying))
 
-    last_tick_orders = []
+    
+    filled_orders = []
 
     for tick in range(1, NUM_TICKS + 1):
         this_tick_orders = []
         for t_id in range(N_TEAMS):
             strategy_fn = team_strategies[t_id]
-            new_orders = strategy_fn(last_tick_orders, t_id, tick)
+            new_orders = strategy_fn(filled_orders, t_id, tick)
             for (symbol, side, price, size) in new_orders:
                 place_order(t_id, symbol, side, price, size)
             this_tick_orders.append((t_id, new_orders))
@@ -180,7 +183,7 @@ def run_simulation():
             mtm_val = mark_to_market(t_id, current_underlying)
             team_pnl_history[t_id].append(mtm_val)
 
-        last_tick_orders = this_tick_orders
+        filled_orders.append(this_tick_orders)
 
     final_sum = get_final_sum_of_cards()
     final_pnls = {}
