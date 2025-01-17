@@ -151,6 +151,7 @@ def random_strategy(order_history, team_id, current_tick):
     return orders
 
 
+
 team_strategies = {
     0: random_strategy,
     1: random_strategy,
@@ -175,7 +176,7 @@ def run_simulation():
             new_orders = strategy_fn(filled_orders, t_id, tick)
             for (symbol, side, price, size) in new_orders:
                 place_order(t_id, symbol, side, price, size)
-            this_tick_orders.append((t_id, new_orders))
+                this_tick_orders.append((t_id, symbol, side, price, size))
 
         match_orders()
         current_underlying = sum(team_cards.values())
